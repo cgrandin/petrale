@@ -1,0 +1,301 @@
+# FIGURES
+
+(ref:fig-catch-fit-en) Predicted catch compared to the observed catch data for the two commercial fleets used in the model. The solid lines are either the observed catches or the median catch by fleet; the dotted lines are the 95% CI for the posterior of the catch fits.
+
+(ref:fig-catch-fit-fr) French here
+
+```{r fig-catch-fit, fig.cap = ifelse(fr(), "(ref:fig-catch-fit-fr)", "(ref:fig-catch-fit-en)")}
+plot_catch_fit_mcmc(base_model, angle_x_labels = TRUE)
+```
+
+<!-- Biomass and recruitment -------------------------------------------------->
+
+(ref:fig-base-sb-en) Spawning biomass of `r sp` for the base model with $B_{MSY}$ reference points. The solid black line with points show the medians of the posteriors, the shaded ribbon encapsulated by dashed lines covers the 95% CI for the posteriors, the point at $B_0$ is the median estimate for the unfished biomass, and the vertical line over that point is the 95% CI for that parameter. The upper part of the CI is not shown for reasons of clarity for the trajectory, the median and CI for $B_0$ here is `r paste0(base_sbo[1], ", ", base_sbo[2])` thousand t. The $B_{MSY}$ reference point lines are shown here for reference only, they are not advised for use in decision making for this stock. See section \@ref(scam-ref-points) for more details.
+
+(ref:fig-base-sb-fr) French here
+
+```{r fig-base-sb, fig.cap = ifelse(fr(), "(ref:fig-base-sb-fr)", "(ref:fig-base-sb-en)")}
+plot_biomass_mcmc(base_model,
+                  angle_x_labels = TRUE,
+                  text_title_size = NULL,
+                  show_bmsy_lines = TRUE,
+                  ylim = c(0, 10000))
+```
+
+(ref:fig-base-sb-bo-en) Spawning biomass of `r sp` for the base model with $B_0$ reference points. See Figure \@ref(fig:fig-base-sb) for more information. The upper part of the CI is not shown for reasons of clarity for the trajectory, the median and CI for $B_0$ here is `r paste0(base_sbo[1], ", ", base_sbo[2])` thousand t.
+
+(ref:fig-base-sb-bo-fr) French here
+
+```{r fig-base-sb-bo, fig.cap = ifelse(fr(), "(ref:fig-base-sb-bo-fr)", "(ref:fig-base-sb-bo-en)")}
+plot_biomass_mcmc(base_model,
+                  angle_x_labels = TRUE,
+                  text_title_size = NULL,
+                  show_bo_lines = TRUE,
+                  bo_refpt_colors = c("salmon", "darkgreen"),
+                  ylim = c(0, 250))
+```
+
+<!-- Relative spawning biomass ----------------------------------------------->
+
+(ref:fig-base-depletion-en) Relative spawning biomass for the base model. The shaded area represents the 95% CI. Horizontal lines indicate the 0.2 $B_0$ (solid, red) and 0.4 $B_0$ (dashed, green) reference points. Because the ribbon represents relative spawning biomass (depletion) and the reference points are with respect to $B_0$, all uncertainty about the ratio of the spawning biomass to the reference points is captured in the ribbon and the reference points are shown as point values.
+
+(ref:fig-base-depletion-fr) French here
+
+```{r fig-base-depletion, fig.cap = ifelse(fr(), "(ref:fig-base-depletion-fr)", "(ref:fig-base-depletion-en)")}
+plot_biomass_mcmc(base_model,
+                  rel = TRUE,
+                  show_bo_lines = TRUE,
+                  angle_x_labels = TRUE,
+                  text_title_size = NULL,
+                  ylim = c(0, 1.3))
+```
+
+<!-- Vulnerable spawning biomass --------------------------------------------->
+
+(ref:fig-base-sb-vuln-compare-en) Spawning biomass of `r sp` for the base model compared with vulnerable biomass for the trawl fisheries for the base model. The spawning biomass is in black and has its 95% CI shaded. The two vulnerable biomass trajectories have their 95% CI contained withing the dotted lines of their respective colours.
+
+(ref:fig-base-sb-vuln-compare-fr) French here
+
+```{r fig-base-sb-vuln-compare, fig.cap = ifelse(fr(), "(ref:fig-base-sb-vuln-compare-fr)", "(ref:fig-base-sb-vuln-compare-en)")}
+plot_vuln_mcmc(base_model,
+               angle_x_labels = TRUE,
+               xlim = c(1997, 2021),
+               ylim = c(0, 180),
+               leg_loc = c(0.05, 0.9))
+```
+
+(ref:fig-base-recr-en) Recruitment of `r sp` for the base model. The black points are the medians of the posteriors, the vertical black lines are the 95% CIs for the posteriors, the point at $R_0$ is the median estimate for the initial recruitment parameter $R_0$, and the vertical line over that point and shaded ribbon across the time series is the 95% CI for $R_0$.
+
+(ref:fig-base-recr-fr) French here
+
+```{r fig-base-recr, fig.cap = ifelse(fr(), "(ref:fig-base-recr-fr)", "(ref:fig-base-recr-en)")}
+plot_recr_mcmc(base_model, angle_x_labels = TRUE, text_title_size = NULL, leg_loc = NULL)
+```
+
+<!-- Fishing mortality ------------------------------------------------------->
+
+(ref:fig-base-f-en) Fishing mortality for the base model for the two trawl fisheries for a single sex. The plots for the second sex are not shown, because they are the same. The shaded area represents the 95% CI.
+
+(ref:fig-base-f-fr) French here
+
+```{r fig-base-f, fig.cap = ifelse(fr(), "(ref:fig-base-f-fr)", "(ref:fig-base-f-en)")}
+plot_f_mcmc(base_model, angle_x_labels = TRUE, text_title_size = NULL)
+```
+
+<!-- Index fits and residuals ------------------------------------------------>
+
+(ref:fig-base-index-fits-en) Index fits for the base model. The light grey points and vertical lines show the index values and 95% CIs; the black points show the medians of the posteriors; the black solid vertical lines show the 95% CIs of the posteriors.
+
+<!-- The 2014 WCHG Synoptic index point is shown but was not included in the model. -->
+
+(ref:fig-base-index-fits-fr) French here
+
+```{r fig-base-index-fits, fig.cap = ifelse(fr(), "(ref:fig-base-index-fits-fr)", "(ref:fig-base-index-fits-en)")}
+
+# NEED TO RUN gfdata draws and survey_index is the survey_index element of that returned list
+
+# Find survey_index <- in index.Rmd
+
+# plot_index_mcmc(base_model,
+#                 type = "fits",
+#                 surv_index = survey_index,
+#                 leg_loc = NULL,
+#                 text_title_size = NULL)
+```
+
+(ref:fig-base-index-resids-en) Index log standardized residuals. The points are the median of the posteriors for the $\epsilon_{k,t}$ parameters in `r iscam`. The vertical lines represent the 95% CIs for those posteriors.
+
+(ref:fig-base-index-resids-fr) Indice Log des résidus normalisés. Les points représentent la médiane des valeurs postérieures pour le paramètre $\epsilon$ dans `r iscam`. Les lignes verticales représentent les intervalles crédibles à 95 % pour ces valeurs postérieures.
+
+```{r fig-base-index-resids, fig.cap = ifelse(fr(), "(ref:fig-base-index-resids-fr)", "(ref:fig-base-index-resids-en)")}
+# plot_index_mcmc(base_model,
+#                 type = "resids",
+#                 surv_index = survey_index,
+#                 leg_loc = NULL,
+#                 text_title_size = NULL)
+```
+
+\clearpage
+
+<!-- Age fits and residuals -------------------------------------------------->
+
+(ref:fig-base-age-fits-ft-en) Age composition fits for each sex for the Freezer trawler fleet. The vertical bars are the age composition data points. The sum of the bar values equals 1 for each year/sex combination. The black points are the medians of the posteriors for each age. The red shaded area with dotted edges represents the 95% CIs. The panel labels are the total number of specimens (sex aggregated) fit for the year.
+
+(ref:fig-base-age-fits-ft-fr) French here
+
+```{r fig-base-age-fits-ft, fig.cap = ifelse(fr(), "(ref:fig-base-age-fits-ft-fr)", "(ref:fig-base-age-fits-ft-en)")}
+plot_age_fits_mcmc(base_model,
+                   gear = 1,
+                   text_title_size = NULL,
+                   show_sample_size_f_only = FALSE) +
+  ylim(0, 0.3)
+```
+
+(ref:fig-base-age-resids-ft-en) Pearson residuals for the age composition fits for each sex for the Freezer trawler fleet. The bubbles represent the median of the posterior for Pearson residuals. Red bubbles are negative residuals, black are positive, and dots represent zero residuals.
+
+(ref:fig-base-age-resids-ft-fr) French here
+
+```{r fig-base-age-resids-ft, fig.cap = ifelse(fr(), "(ref:fig-base-age-resids-ft-fr)", "(ref:fig-base-age-resids-ft-en)")}
+plot_age_resids_mcmc(base_model,
+                     gear = 1,
+                     text_title_size = NULL,
+                     angle_x_labels = TRUE)
+```
+
+\clearpage
+
+(ref:fig-base-age-fits-ss-firsthalf-en) Age composition fits for each sex for the Shoreside fleet from 1996--2007. See Figure \@ref(fig:fig-base-age-fits-ft) for plot details.
+
+(ref:fig-base-age-fits-ss-firsthalf-fr) French here
+
+```{r fig-base-age-fits-firsthalf-ss, fig.cap = ifelse(fr(), "(ref:fig-base-age-fits-ss-firsthalf-fr)", "(ref:fig-base-age-fits-ss-firsthalf-en)")}
+plot_age_fits_mcmc(base_model,
+                   gear = 2,
+                   #yrs = 1996:2007,
+                   text_title_size = NULL,
+                   show_sample_size_f_only = FALSE) +
+  ylim(0, 0.3)
+```
+
+(ref:fig-base-age-fits-ss-secondhalf-en) Age composition fits for each sex for the Shoreside fleet from 2008--2019. See Figure \@ref(fig:fig-base-age-fits-ft) for plot details.
+
+(ref:fig-base-age-fits-ss-secondhalf-fr) French here
+
+```{r fig-base-age-fits-secondhalf-ss, fig.cap = ifelse(fr(), "(ref:fig-base-age-fits-ss-secondhalf-fr)", "(ref:fig-base-age-fits-ss-secondhalf-en)")}
+# plot_age_fits_mcmc(base_model,
+#                    gear = 2,
+#                    yrs = 2008:2022,
+#                    text_title_size = NULL,
+#                    show_sample_size_f_only = FALSE) +
+#   ylim(0, 0.3)
+```
+
+(ref:fig-base-age-resids-ss-en) Pearson residuals for the age composition fits for each sex for the Shoreside fleet. The bubbles represent the median of the posterior for Pearson residuals. Red bubbles are negative residuals, black are positive, and dots represent zero residuals.
+
+(ref:fig-base-age-resids-ss-fr) French here
+
+```{r fig-base-age-resids-ss, fig.cap = ifelse(fr(), "(ref:fig-base-age-resids-ss-fr)", "(ref:fig-base-age-resids-ss-en)")}
+plot_age_resids_mcmc(base_model,
+                     gear = 2,
+                     text_title_size = NULL,
+                     angle_x_labels = TRUE)
+```
+
+\clearpage
+
+(ref:fig-base-age-fits-qcs-en) Age composition fits for each sex for the `r qcs`. See Figure \@ref(fig:fig-base-age-fits-ft) for plot details.
+
+(ref:fig-base-age-fits-qcs-fr) French here
+
+```{r fig-base-age-fits-qcs, fig.cap = ifelse(fr(), "(ref:fig-base-age-fits-qcs-fr)", "(ref:fig-base-age-fits-qcs-en)")}
+plot_age_fits_mcmc(base_model,
+                   gear = 3,
+                   text_title_size = NULL,
+                   show_sample_size_f_only = FALSE) +
+  ylim(0, 0.3)
+```
+
+(ref:fig-base-age-resids-qcs-en) Pearson residuals for the age composition fits for each sex for the `r qcs`. The bubbles represent the median of the posterior for Pearson residuals. Red bubbles are negative residuals, black are positive, and dots represent zero residuals.
+
+(ref:fig-base-age-resids-qcs-fr) French here
+
+```{r fig-base-age-resids-qcs, fig.cap = ifelse(fr(), "(ref:fig-base-age-resids-qcs-fr)", "(ref:fig-base-age-resids-qcs-en)")}
+plot_age_resids_mcmc(base_model,
+                     gear = 3,
+                     text_title_size = NULL,
+                     angle_x_labels = TRUE)
+```
+
+\clearpage
+
+(ref:fig-base-age-fits-hss-en) Age composition fits for each sex for the `r hss`. See Figure \@ref(fig:fig-base-age-fits-ft) for plot details.
+
+(ref:fig-base-age-fits-hss-fr) French here
+
+```{r fig-base-age-fits-hss, fig.cap = ifelse(fr(), "(ref:fig-base-age-fits-hss-fr)", "(ref:fig-base-age-fits-hss-en)")}
+plot_age_fits_mcmc(base_model,
+                   gear = 4,
+                   text_title_size = NULL,
+                   show_sample_size_f_only = FALSE) +
+  ylim(0, 0.3)
+```
+
+(ref:fig-base-age-resids-hss-en)  Pearson residuals for the age composition fits for each sex for the `r hss`. The bubbles represent the median of the posterior for Pearson residuals. Red bubbles are negative residuals, black are positive, and dots represent zero residuals.
+
+(ref:fig-base-age-resids-hss-fr) French here
+
+```{r fig-base-age-resids-hss, fig.cap = ifelse(fr(), "(ref:fig-base-age-resids-hss-fr)", "(ref:fig-base-age-resids-hss-en)")}
+plot_age_resids_mcmc(base_model,
+                     gear = 4,
+                     text_title_size = NULL,
+                     angle_x_labels = TRUE)
+```
+
+\clearpage
+
+(ref:fig-base-age-fits-wcvis-en) Age composition fits for each sex for the `r wcvis`. See Figure \@ref(fig:fig-base-age-fits-ft) for plot details.
+
+(ref:fig-base-age-fits-wcvis-fr) French here
+
+```{r fig-base-age-fits-wcvis, fig.cap = ifelse(fr(), "(ref:fig-base-age-fits-wcvis-fr)", "(ref:fig-base-age-fits-wcvis-en)")}
+plot_age_fits_mcmc(base_model,
+                   gear = 5,
+                   text_title_size = NULL,
+                   show_sample_size_f_only = FALSE) +
+  ylim(0, 0.3)
+```
+
+(ref:fig-base-age-resids-wcvis-en)  Pearson residuals for the age composition fits for each sex for the `r wcvis`. The bubbles represent the median of the posterior for Pearson residuals. Red bubbles are negative residuals, black are positive, and dots represent zero residuals.
+
+(ref:fig-base-age-resids-wcvis-fr) French here
+
+```{r fig-base-age-resids-wcvis, fig.cap = ifelse(fr(), "(ref:fig-base-age-resids-wcvis-fr)", "(ref:fig-base-age-resids-wcvis-en)")}
+plot_age_resids_mcmc(base_model,
+                     gear = 5,
+                     text_title_size = NULL,
+                     angle_x_labels = TRUE)
+```
+
+\clearpage
+
+<!-- (ref:fig-base-age-fits-wchgs-en) Age composition fits for each sex for the `r wchgs`. See Figure \@ref(fig:fig-base-age-fits-ft) for plot details. -->
+
+<!-- (ref:fig-base-age-fits-wchgs-fr) -->
+
+<!-- ```{r fig-base-age-fits-wchgs, fig.cap = ifelse(fr(), "(ref:fig-base-age-fits-wchgs-fr)", "(ref:fig-base-age-fits-wchgs-en)")} -->
+<!-- plot_age_fits_mcmc(base_model, gear = 6, text_title_size = NULL) -->
+<!-- ``` -->
+
+<!-- (ref:fig-base-age-resids-wchgs-en) Age composition log standardized residuals for each sex for the `r wchgs`. See Figure \@ref(fig:fig-base-age-resids-ft) for plot details. -->
+
+<!-- (ref:fig-base-age-resids-wchgs-fr)  -->
+
+<!-- ```{r fig-base-age-resids-wchgs, fig.cap = ifelse(fr(), "(ref:fig-base-age-resids-wchgs-fr)", "(ref:fig-base-age-resids-wchgs-en)")} -->
+<!-- plot_age_resids_mcmc(base_model, gear = 6, text_title_size = NULL) -->
+<!-- ``` -->
+
+\clearpage
+
+<!-- Selectivity ------------------------------------------------------------->
+
+(ref:fig-base-selex-en) Estimated and fixed selectivities by sex for the base model. The dots are estimated selectivity-at-age, the shaded areas around are the 95% CI for those estimates. Single lines with no CI are fixed selectivities. Dashed lines represent maturity, with the colours representing the sexes and are the same as for selectivity curves.
+
+(ref:fig-base-selex-fr) French goes here
+
+```{r fig-base-mcmc-selex, fig.cap = ifelse(fr(), "(ref:fig-base-selex-fr)", "(ref:fig-base-selex-en)")}
+plot_selex_mcmc(base_model,
+                show_maturity = FALSE,
+                leg_loc = "none")
+```
+
+<!-- Reference points -------------------------------------------------------->
+
+(ref:fig-base-ref-points-en) Posterior distributions for reference points and other values of interest for the base model. Subscripts are 1 = Freezer trawlers and 2 = Shoreside.
+
+(ref:fig-base-ref-points-fr) French here
+
+```{r fig-base-ref-points, fig.cap = ifelse(fr(), "(ref:fig-base-ref-points-fr)", "(ref:fig-base-ref-points-en)")}
+plot_ref_points(base_model)
+```
+
+\clearpage

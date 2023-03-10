@@ -1,0 +1,645 @@
+---
+title: "Petrale Sole (*Sceince name*) Stock Assessment for the West Coast of British Columbia in 2023"
+french_title: "Évaluation du stock de sole de Petrale (*nom de la province*) pour la côte ouest de la Colombie-Britannique en 2023"
+author: |
+  Robyn Forrest^1^,
+author_list: "forrest, R."
+address: |
+  ^1^Pacific Biological Station\
+     Fisheries and Oceans Canada, 3190 Hammond Bay Road\
+     Nanaimo, British Columbia, V9T 6N7, Canada
+french_address: |
+  ^1^Station bioslogique du Pacifique\
+     Pêches et Océans Canada, 3190 Hammond Bay Road\
+     Nanaimo, Colombie-Britannique, V9T 6N7, Canada\
+month: October
+french_month: Octobre
+year: 2023
+report_number: nnn
+region: Pacific Region
+french_region: "Région du Pacifique"
+isbn: "978-0-660-38322-4"
+cat_no: "Fs70-6/2021-012E-PDF"
+citation_other_language: "Forrest, R. Évaluation du stock de sole de Petrale (*nom de la province*) pour la côte ouest de la Colombie-Britannique en 2023. DFO Secr. can. de consult. sci. du MPO. Doc. de rech 2023/nnn."
+
+abstract: |
+  Petrale Sole ...
+
+french_abstract: |
+  Petrale Sole ...
+
+header: "Draft working paper --- Do not cite or circulate" # or "" to omit
+output:
+ csasdown::resdoc_pdf:
+   # build_rds is a toggle to re-build all the RDS files for the models
+   build_rds: false
+   keep_md: true
+   french: false
+   # copy_sty is a toggle to copy the style file from the csasdown package every time you compile
+   # the document. If false, any changes you have made to the style file in your project
+   # will remain between compilations. If true, your changes will be lost when you compile
+   copy_sty: true
+   # line_nums is a toggle to show line numbers on the left side of the page. 
+   line_nums: true
+   # line_nums_mod represents showing every Nth line if line_nums is true
+   line_nums_mod: 1
+   # lot_lof is a toggle to show/not show the lists of tables and figures at the
+   # beginning of the document
+   lot_lof: false
+   # draft_watermark is a toggle to show/not show a DRAFT watermark across every page
+   draft_watermark: false
+   # include_section_nums, if true includes section numbering in the document body,
+   # if false, no numbering in the document body but the TOC will still show numbering
+   include_section_nums: true
+   # highlight is the theme to use for code output. Must be one of the list given by:
+   # pandoc --list-highlight-styles
+   # which are:
+   # pygments, tango, espresso, zenburn, kate, monochrome, breezedark, haddock
+   # or the name of a custom *.latex file which is most easily made by copying one from 
+   # the csasdown library 'themes' directory, this directory on your machine:
+   # file.path(.libPaths(), "csasdown", "themes")
+   # to your working directory (the one containing index.Rmd)
+   # To change the foreground text color, change the RGB value in the line containing
+   # 'DefineVerbatimEnvironment'
+   # To change background color, change the RGB values in the line containing 'shadecolor'
+   highlight: tango
+# ------------
+# End of options to set
+knit: (function(input, ...) {
+       csasdown::render('_bookdown.yml')
+      })
+link-citations: true
+bibliography: bib/refs.bib
+# Any extra LaTeX code for the header:
+header-includes:
+  - \usepackage{amsmath}
+---
+
+```{r setup, echo=FALSE, cache=FALSE, message=FALSE, results='hide', warning=FALSE}
+
+curr_dir <- basename(getwd())
+curr_dir_up1 <- basename(dirname(getwd()))
+if(curr_dir != "doc" && curr_dir_up1 != "petrale"){
+  stop("You must be in the 'petrale/doc' directory to source this file.\n",
+       "The current directory is: ", getwd(),
+       call. = FALSE)
+}
+
+library(knitr)
+if (is_latex_output()) {
+  knitr_figs_dir <- "knitr-figs-pdf/"
+  knitr_cache_dir <- "knitr-cache-pdf/"
+  fig_out_type <- "png"
+} else {
+  knitr_figs_dir <- "knitr-figs-docx/"
+  knitr_cache_dir <- "knitr-cache-docx/"
+  fig_out_type <- "png"
+}
+fig_asp <- 0.618
+fig_width <- 8
+fig_out_width <- "5.5in"
+fig_dpi <- 180
+fig_align <- "center"
+fig_pos <- "H"
+user <- Sys.info()[["user"]]
+opts_chunk$set(
+  collapse = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  results = 'hide',
+  comment = "#>",
+  fig.path = knitr_figs_dir,
+  cache.path = knitr_cache_dir,
+  fig.asp = fig_asp,
+  fig.width = fig_width,
+  out.width = fig_out_width,
+  echo = FALSE,
+  # autodep = isTRUE(user %in% "seananderson"),
+  # cache = isTRUE(user %in% "seananderson"),
+  cache.comments = FALSE,
+  dev = fig_out_type,
+  dpi = fig_dpi,
+  fig.align = fig_align,
+  fig.pos = fig_pos)
+
+options(
+  # Prevent xtable from adding a timestamp comment to the table code
+  # it produces
+  xtable.comment = FALSE,
+  # Don't allow kableExtra to load packages, we add them manually in
+  # csasdown
+  kableExtra.latex.load_packages = FALSE,
+  # Stop chunk output (echo) running into the margins
+  width = 80,
+  # Don't use scientific notation (stops tables from showing 1.2e3, etc.)
+  scipen = 999,
+  # Fixes weird bug where knitr::include_graphics() thinks the non-git folder
+  # is relative
+  knitr.graphics.rel_path = FALSE)
+```
+
+```{r library-setup, cache = FALSE, fig.keep='none'}
+# Libraries in alphabetical order
+
+library(devtools)
+library(dplyr)
+if(user == "grandin"){
+  load_all("~/github/pbs-assess/gfiscamutils")
+  load_all("~/github/pbs-assess/gfplot")
+  load_all("~/github/pbs-assess/csasdown")
+  load_all("~/github/pbs-assess/rosettafish")
+}else if(user == "seananderson"){
+  load_all("~/src/gfiscamutils/")
+  load_all("~/src/csasdown/")
+  library(gfplot)
+  library(rosettafish)
+} else {
+  library(gfiscamutils)
+  library(gfplot)
+  library(csasdown)
+  library(rosettafish)
+}
+library(gfutilities)
+library(ggplot2)
+library(gridExtra)
+library(here)
+library(kableExtra)
+library(patchwork)
+library(purrr)
+library(tidylog, warn.conflicts = FALSE)
+devtools::load_all(here::here())
+
+meta <- rmarkdown::metadata$output
+build_rds <- FALSE
+if(!is.null(meta)){
+  build_rds <- meta$`csasdown::resdoc_pdf`$build_rds
+}
+```
+
+```{r include = FALSE}
+# Don't load the models if they already exist
+if(!exists("models") || !exists("drs"))
+  source("load-models.R", local = knitr::knit_global())
+```
+
+```{r data-setup, cache.lazy = FALSE}
+# This chunk requires that the chunk above that loads load-models.R is run
+
+bc <- "British Columbia"
+sp <- "Petrale sole"
+iscam <- "ISCAM"
+theme_set(gfiscam_theme())
+
+base_all_gears <- gear_lu_table(base_model, "all")
+base_age_gears <- gear_lu_table(base_model, "age")
+base_index_gears <- gear_lu_table(base_model, "index")
+base_fleet_gears <- gear_lu_table(base_model, "fleet")
+
+mcmc_chain_length <- 10000000
+mcmc_num_samples <- 2000
+mcmc_sample_freq <- mcmc_chain_length / mcmc_num_samples
+mcmc_burn_in <- 1000
+mcmc_actual_samples <- mcmc_num_samples - mcmc_burn_in
+
+qcs <- "Queen Charlotte Sound Synoptic Survey"
+hsmas <- "Hecate Strait Multispecies Assemblage Survey"
+hss <- "Hecate Strait Synoptic Survey"
+wcvis <- "West Coast Vancouver Island Synoptic Survey"
+wchgs <- "West Coast Haida Gwaii Synoptic Survey"
+dcpue <- "Discard CPUE Index"
+
+# Need to have data from gfdata draw here, to plot survey index fits
+# survey_index <- dat$survey_index %>% 
+#   select(-species_common_name, -species_science_name)
+
+#la <- "2015 assessment"
+# tv_block1 <- paste0(unique(filter(base_model$mcmccalcs$selest_quants,
+#                                   gear == "QCS Synoptic", block == 1)$start_year),
+#                     "--", 
+#                     unique(filter(base_model$mcmccalcs$selest_quants,
+#                                   gear == "QCS Synoptic", block == 1)$end_year))
+# tv_block2 <- paste0(unique(filter(base_model$mcmccalcs$selest_quants,
+#                                   gear == "QCS Synoptic", block == 2)$start_year),
+#                     "--", 
+#                     unique(filter(base_model$mcmccalcs$selest_quants,
+#                                   gear == "QCS Synoptic", block == 2)$end_year))
+
+# Text for selectivity block year ranges
+# qcs_tv_yr_start <- base_model$ctl$start.yr.time.block[3, ]
+# qcs_tv_yr_start[1] <- base_model$dat$start.yr
+# qcs_tv_yr_end <- c(qcs_tv_yr_start[2:length(qcs_tv_yr_start)] - 1,
+#                    base_model$dat$end.yr)
+# if(length(qcs_tv_yr_start) == 2){
+#   qcs_sel_ranges <- paste(paste0(qcs_tv_yr_start, "-", qcs_tv_yr_end),
+#                           collapse = " and ")
+# }else{
+#   qcs_sel_ranges <- paste0(qcs_tv_yr_start, "-", qcs_tv_yr_end)
+#   tmp <- qcs_sel_ranges[length(qcs_sel_ranges)]
+#   qcs_sel_ranges <- paste(qcs_sel_ranges[-length(qcs_sel_ranges)],
+#                           collapse = ", ")
+#   qcs_sel_ranges <- paste0(qcs_sel_ranges, ", and ", tmp)
+# }
+
+# Number of parameters estimated (from PAR file)
+num_params <- get_num_params_est(base_model)
+
+# Catch table
+ct <- as_tibble(base_model$dat$catch)
+ct_start_yr <- min(ct$year)
+ct_end_yr <- max(ct$year)
+
+# Reference points (table values)
+ref_pts <- as_tibble(base_model$mcmccalcs$params_quants)
+
+# Projected biomass
+end_yr <- base_model$dat$end.yr
+assess_yr <- end_yr + 1
+proj_yr <- assess_yr + 1
+sbt_quants <- as_tibble(base_model$mcmccalcs$sbt_quants)
+proj_bio <- sbt_quants[, as.character(assess_yr)] |> pull()
+
+# Fishing mortality
+f_max_by_gear <- map_dbl(base_model$mcmccalcs$ft_quants, ~{
+  max(.x[2,])
+})
+f_max <- max(f_max_by_gear)
+which_f_max <- which(f_max == f_max_by_gear)
+which_f_max_gear <- base_model$dat$fleet_gear_names[which_f_max]
+which_f_max_yr <- names(which(base_model$mcmccalcs$ft_quants[[which_f_max]][2, ] == f_max))
+
+f_ci <- base_model$mcmccalcs$ft_quants[[which_f_max]][, base_model$mcmccalcs$ft_quants[[which_f_max]][2, ] == f_max]
+
+# Relative spawning biomass
+depl_end <- as_tibble(base_model$mcmccalcs$depl_quants) |>
+  select(!!sym(as.character(assess_yr))) |> 
+  pull()
+
+# Columns of table_dec are:
+# Catch, P(B2023<0.2B0), P(B2024<0.2B0), P(B2025<0.2B0), P(B2023<0.2B0),
+# P(B2023<0.4B0), P(B2024<0.4B0), P(B2025<0.4B0), P(B2023<0.4B0),
+# P(B2023<B2022), P(B2024<B2023), P(B2025<B2024)
+# table_dec <- table_decisions(base_model, ret_df = TRUE, digits = 3)
+# catch_col <- sym(grep("^Catch", names(table_dec), value = TRUE))
+
+# Decision table column indices for P(B_2023<B_2022)
+# i_2023 <- grep("\\{2023\\} < B", names(table_dec))
+# i_2024 <- grep("\\{2024\\} < B", names(table_dec))
+# i_2025 <- grep("\\{2025\\} < B", names(table_dec))
+# i_2026 <- grep("\\{2026\\} < B", names(table_dec))
+
+# prob_2023_2022_catch_0 <- table_dec |>
+#   filter(!!catch_col == 0) |> pull(i_2023)
+# prob_2023_2022_catch_5 <- table_dec |>
+#   filter(!!catch_col == 5) |> pull(i_2023)
+# prob_2023_2022_catch_10 <- table_dec |>
+#   filter(!!catch_col == 10) |> pull(i_2023)
+# prob_2023_2022_catch_15 <- table_dec |>
+#   filter(!!catch_col == 15) |> pull(i_2023)
+# prob_2024_2023_catch_10 <- table_dec |>
+#   filter(!!catch_col == 10) |> pull(i_2024)
+# prob_2025_2024_catch_10 <- table_dec |>
+#   filter(!!catch_col == 10) |> pull(i_2025)
+# prob_2026_2025_catch_10 <- table_dec |>
+#   filter(!!catch_col == 10) |> pull(i_2026)
+
+# probs_proj_less_assess <- table_dec |> select(i_2023) |> pull()
+# which_prob_less_50_50 <- which(probs_proj_less_assess < 0.5)
+# which_prob_less_50_50 <- which_prob_less_50_50[length(which_prob_less_50_50)]
+# prob_less_50_50 <- table_dec[which_prob_less_50_50, ]
+# prob_greater_50_50 <- table_dec[which_prob_less_50_50 + 1, ]
+# 
+# catch_less_50_50 <- prob_less_50_50 %>% pull(catch_col)
+# val_less_50_50 <- prob_less_50_50 |> pull(i_2023)
+# 
+# # Decision table column indices for P(B_2023<0.4B0) and P(B_2023<0.4B0)
+# i_2023_4bo <- grep("\\{2023\\} < 0.4B", names(table_dec))
+# i_2023_2bo <- grep("\\{2023\\} < 0.2B", names(table_dec))
+# 
+# below_04bo <- table_dec |> 
+#   pull(i_2023_4bo)
+# range_below_04bo <- c(min(below_04bo), max(below_04bo))
+# 
+# below_02bo <- table_dec |> 
+#   pull(i_2023_2bo)
+# range_below_02bo <- c(min(below_02bo), max(below_02bo))
+# 
+# # For decision table caption text
+# prob_10t_below_2bo <- table_dec |> 
+#     filter(!!catch_col == 10) |> pull(i_2023_2bo)
+# prob_10t_below_4bo <- table_dec |> 
+#     filter(!!catch_col == 10) |> pull(i_2023_4bo)
+# 
+# # For the Projections and Decision table section
+# uncert_2025_catch_10 <- base_model$mcmc$proj |>
+#   filter(TAC == 10) |>
+#   pull(B2025)
+# uncert_2025_catch_10 <- quantile(uncert_2025_catch_10 / base_model$mcmc$params$sbo,
+#                                  probs = c(0.025, 0.5, 0.975))
+# 
+# lo_uncert_2025_catch_10 <- uncert_2025_catch_10[1]
+# hi_uncert_2025_catch_10 <- uncert_2025_catch_10[3]
+# diff_uncert_2025_catch_10 <- hi_uncert_2025_catch_10 - lo_uncert_2025_catch_10
+# names(diff_uncert_2025_catch_10) <- "difference"
+
+```
+
+```{r model-param-value-calcs}
+
+base_sbo <- get_parvals(base_model, "sbo")
+base_bo <- get_parvals(base_model, "bo")
+base_sbt <- get_parvals(base_model, "sbt")
+base_depl <- get_parvals(base_model, "depl", digits = 2)
+base_m_male <- get_parvals(base_model, "m_male", digits = 2)
+base_m_female <- get_parvals(base_model, "m_female", digits = 2)
+base_h <- get_parvals(base_model, "h", digits = 2)
+
+#bvals <- get_group_parvals(models$bridge_grps)
+svals <- get_group_parvals(models$sens_grps)
+# Now, to get the b0 median for the first sensitivity model in the third model group:
+# Note you ave to skip the first one in each group because it is the base model
+# svals[[3]][[2]]$bo[1]
+# b0 CI range:
+# svals[[3]][[2]]$bo[2]
+# sbt median:
+# svals[[3]][[2]]$sbt[1]
+# sbt CI range:
+# svals[[3]][[2]]$sbt[2]
+# sbt end year:
+# svals[[3]][[2]]$sbt[3
+
+# Extract parameter values from the table found in the control file
+#
+# @param model The iSCAM model
+# @param param The parameter name (row)
+# @param value The value (column)
+# @param digits The number of decimal points to return
+#
+# @return The value or row
+# @export
+get_ctl_params <- function(model, param = NULL, value = NULL, ...){
+  inp_params <- as_tibble(rownames_to_column(as.data.frame(model$ctl$params),
+                                             var = "param"))
+
+  if(!is.null(param)){
+    inp_params <- filter(inp_params, param == !!param)
+  }
+  if(!is.null(value)){
+    return(pull(inp_params, value))
+  }
+  inp_params
+}
+
+get_param_est <- function(model, param = NULL, est_digits = 2, ...){
+  if(is.null(param)){
+    stop("Must provode `param` name", call. = FALSE)
+  }
+  
+  if(param == "log_m_female"){
+    param ="m_sex1"
+  }
+  if(param == "log_m_male"){
+    param ="m_sex2"
+  }
+  raw <- as_tibble(model$mcmccalcs$params_quants)[[param]]
+  paste0(f(raw[2], est_digits), " (", f(raw[1], est_digits), "--", f(raw[3], est_digits), ")")
+}
+
+get_param_vals <- function(model, param, est = TRUE, ...){
+  out <- NULL
+  out$init <- get_ctl_params(model, param, "ival", ...)
+  out$p1 <- get_ctl_params(model, param, "p1", ...)
+  out$p2 <- get_ctl_params(model, param, "p2", ...)
+  if(est){
+    out$est <- get_param_est(model, param, ...)
+  }
+  out
+}
+
+base_vartheta <- get_param_vals(base_model, "vartheta", est = FALSE, digits = 5)
+base_rho <- get_param_vals(base_model, "rho", est = FALSE, digits = 5)
+base_sig_tau <- calc_sig_tau(get_param_vals(base_model, "rho", est = FALSE)$init,
+                             get_param_vals(base_model, "vartheta", est = FALSE)$init)
+base_sig <- f(base_sig_tau[1], 1)
+base_tau <- f(base_sig_tau[2], 1)
+
+base_h <- get_param_vals(base_model, "h")
+base_h_prior1 <- calc_beta_mean_cv(base_h$p1, base_h$p2)[1]
+base_h_prior2 <- calc_beta_mean_cv(base_h$p1, base_h$p2)[2]
+base_h_prior_params <- paste(f(base_h_prior1, 2),
+                             ",",
+                             f(base_h_prior2, 2))
+base_m_female <- get_param_vals(base_model, "log_m_female")
+#base_m_male <- get_param_vals(base_model, "log_m_male")
+
+#sens_1_2_vartheta <- get_param_vals(models$sens_grps[[1]][[2]], "vartheta")
+#sens_1_2_rho <- get_param_vals(models$sens_grps[[1]][[2]], "rho", est = FALSE)
+#sens_1_2_sig_tau <- calc_sig_tau(get_param_vals(models$sens_grps[[1]][[2]],
+#                                                           "rho", est = FALSE)$init,
+#                                 get_param_vals(models$sens_grps[[1]][[2]],
+#                                                           "vartheta")$init)
+#sens_1_2_sig <- f(sens_1_2_sig_tau[1], 3)
+# sens_1_2_tau <- f(sens_1_2_sig_tau[2], 1)
+# sens_1_2_h <- get_param_vals(models$sens_grps[[1]][[2]], "h")
+# sens_1_2_sbo <- get_param_vals(models$sens_grps[[1]][[2]], "sbo", est_digits = 0)
+# 
+# sens_1_3_vartheta <- get_param_vals(models$sens_grps[[1]][[3]], "vartheta")
+# sens_1_3_rho <- get_param_vals(models$sens_grps[[1]][[3]], "rho", est = FALSE)
+# sens_1_3_sig_tau <- calc_sig_tau(get_param_vals(models$sens_grps[[1]][[3]],
+#                                                            "rho", est = FALSE)$init,
+#                                  get_param_vals(models$sens_grps[[1]][[3]],
+#                                                            "vartheta")$init)
+# sens_1_3_sig <- f(sens_1_3_sig_tau[1], 1)
+# sens_1_3_tau <- f(sens_1_3_sig_tau[2], 1)
+# sens_1_3_sbo <- get_param_vals(models$sens_grps[[1]][[3]], "sbo", est_digits = 0)
+# 
+# 
+# sens_1_4_vartheta <- get_param_vals(models$sens_grps[[1]][[4]], "vartheta")
+# sens_1_4_rho <- get_param_vals(models$sens_grps[[1]][[4]], "rho", est = FALSE)
+# sens_1_4_sig_tau <- calc_sig_tau(get_param_vals(models$sens_grps[[1]][[4]],
+#                                                            "rho", est = FALSE)$init,
+#                                  get_param_vals(models$sens_grps[[1]][[4]],
+#                                                            "vartheta")$init)
+# sens_1_4_sbo <- get_param_vals(models$sens_grps[[1]][[4]], "sbo")
+# 
+# sens_1_4_sig <- f(sens_1_4_sig_tau[1], 1)
+# sens_1_4_tau <- f(sens_1_4_sig_tau[2], 1)
+# 
+# sens_1_5_h <- get_param_vals(models$sens_grps[[1]][[5]], "h")
+# sens_1_5_h_prior1 <- calc_beta_mean_cv(sens_1_5_h$p1, sens_1_5_h$p2)[1]
+# sens_1_5_h_prior2 <- calc_beta_mean_cv(sens_1_5_h$p1, sens_1_5_h$p2)[2]
+# sens_1_5_h_prior_params <- paste(f(sens_1_5_h_prior1, 2),
+#                              ",",
+#                              f(sens_1_5_h_prior2, 2))
+# 
+# sens_2_2_m_female <- get_param_vals(models$sens_grps[[2]][[2]], "log_m_female")
+# sens_2_3_m_female <- get_param_vals(models$sens_grps[[2]][[3]], "log_m_female")
+# sens_2_4_m_male <- get_param_vals(models$sens_grps[[2]][[4]], "log_m_male")
+# sens_2_5_m_male <- get_param_vals(models$sens_grps[[2]][[5]], "log_m_male")
+# 
+# # qk priors and estimates
+# base_qk_inp_params <- base_model$ctl$surv.q
+# base_qk_mean <- exp(base_qk_inp_params[rownames(base_qk_inp_params) == "priormeanlog"])[1]
+# base_qk_sd <- base_qk_inp_params[rownames(base_qk_inp_params) == "priorsd"][1]
+# 
+# sens_qk_inp_params <- models$sens_grps[[3]][[2]]$ctl$surv.q
+# sens_qk_mean <- exp(sens_qk_inp_params[rownames(sens_qk_inp_params) == "priormeanlog"])[1]
+# sens_qk_sd <- sens_qk_inp_params[rownames(sens_qk_inp_params) == "priorsd"][1]
+# 
+# sens_qkp_inp_params <- models$sens_grps[[3]][[3]]$ctl$surv.q
+# sens_qkp_mean <- exp(sens_qkp_inp_params[rownames(sens_qkp_inp_params) == "priormeanlog"])[1]
+# sens_qkp_sd <- sens_qkp_inp_params[rownames(sens_qkp_inp_params) == "priorsd"][1]
+# 
+# sens_3_2_selex_f_qcs <- filter(models$sens_grps[[3]][[2]]$mcmccalcs$selest_quants, gear == "QCS Synoptic", sex == 2)$a_hat
+# sens_3_2_selex_f_qcs_mean_ci <- paste0(f(sens_3_2_selex_f_qcs[2], 1),
+#                                        " (",
+#                                        f(sens_3_2_selex_f_qcs[1], 1),
+#                                        "--",
+#                                        f(sens_3_2_selex_f_qcs[3], 1),
+#                                        ")")
+
+# This is a hard coded value in the abstract (percentage of posteriors below the 0.2B0 LRP)
+prob_below_02_sbo_2022 <- sum(unlist(base_model$mcmccalcs$depl[, ncol(base_model$mcmccalcs$depl)]) < 0.2) / 
+  nrow(base_model$mcmccalcs$depl) * 100
+
+prob_above_02_sbo_2022 <- sum(unlist(base_model$mcmccalcs$depl[, ncol(base_model$mcmccalcs$depl)]) > 0.2) / 
+  nrow(base_model$mcmccalcs$depl) * 100
+
+prob_above_04_sbo_2022 <- sum(unlist(base_model$mcmccalcs$depl[, ncol(base_model$mcmccalcs$depl)]) > 0.4) / 
+  nrow(base_model$mcmccalcs$depl) * 100
+
+#split_sex_model_sel <- models$bridge_grps[[2]][[4]]$mcmccalcs$selest_quants |> filter(gear == "WCHG Synoptic", sex == 2)
+# split_sex_model_sel_ahat <- paste0(f(split_sex_model_sel$a_hat[2]), " (", 
+#                                    f(split_sex_model_sel$a_hat[1]), "--",
+#                                    f(split_sex_model_sel$a_hat[3]), ")")
+# split_sex_model_sel_ghat <- paste0(f(split_sex_model_sel$g_hat[2]), " (", 
+#                                    f(split_sex_model_sel$g_hat[1]), "--",
+#                                    f(split_sex_model_sel$g_hat[3]), ")")
+
+age_50_sel <- base_model$mcmccalcs$params_quants |> 
+  as_tibble(rownames = "quant") |>
+  filter(quant == "50%") |>
+  select(contains("sel")) |> 
+  select(contains("age50"))
+mean_female_age_50_sel <- age_50_sel |> 
+  select(contains("female")) |> 
+  unlist() |> 
+  mean()
+mean_male_age_50_sel <- age_50_sel |> 
+  select(contains("male")) |> 
+  unlist() |> 
+  mean()
+
+vuln_ratio_yr <- "2022"
+base_vuln_bio <-
+  base_model$mcmccalcs$vbt_quants[[1]][, vuln_ratio_yr][2] + base_model$mcmccalcs$vbt_quants[[2]][, vuln_ratio_yr][2]
+
+base_model_bio <- base_model$mcmccalcs$sbt_quants[, vuln_ratio_yr][2]
+base_model_vuln_ratio <- base_vuln_bio / base_model_bio
+
+sel_eq_mat_vuln_bio <-
+  models$sens_grps[[4]][[2]]$mcmccalcs$vbt_quants[[1]][, vuln_ratio_yr][2] + models$sens_grps[[4]][[2]]$mcmccalcs$vbt_quants[[2]][, vuln_ratio_yr][2]
+
+sel_eq_mat_bio <- models$sens_grps[[4]][[2]]$mcmccalcs$sbt_quants[, vuln_ratio_yr][2]
+
+sel_eq_mat_vuln_ratio <- sel_eq_mat_vuln_bio / sel_eq_mat_bio
+
+```
+
+```{r removal-rate-calcs}
+
+# This was returned from a call to find_f_b40(base_model)
+# and represent the F and U values that it would take to drive the spawning biomass
+# to 0.4B0 from 2022 to 2023. The catch at those rates is also included.
+# f_bo_40 <- list(f = c(f_fleet1 = 0.06636655,
+#                       f_fleet2 = 0.04168355),
+#                 u = c(u_fleet1 = 0.06421221,
+#                       u_fleet2 = 0.04082674),
+#                 catch = 4.40625)
+# Difference between 0.4B0 and biomass after 50 years (kt)
+# diff_bio_b40 <- f(0.0064 * 1000, 1)
+
+# extract_fleet_f <- function(d, fleet = 1){
+# 
+#   fleet_str <- ifelse(fleet == 1, "flt1$", "flt2$")
+#   
+#   d <- d |> 
+#     select(catch, which(grepl(fleet_str, names(d))))
+#   
+#   names(d) <- gsub("_flt[1|2]$", "", names(d))
+# 
+#   d |> 
+#     mutate(fleet = !!fleet) |> 
+#     select(catch, fleet, everything())
+# }
+# 
+# extract_sex_f <- function(d, sex = "f"){
+# 
+#   sex_str <- ifelse(sex == "f", "sex1$", "sex2$")
+#   d <- d |> 
+#     select(catch, which(grepl(sex_str, names(d))))
+# 
+#   names(d) <- gsub("_sex[1|2]$", "", names(d))
+# 
+#   out_lst <- list()
+#   out_lst$fleet1 <- extract_fleet_f(d, 1) |> 
+#     mutate(sex = !!sex) |> 
+#     select(catch, fleet, sex, everything())
+# 
+#   out_lst$fleet2 <- extract_fleet_f(d, 2) |> 
+#     mutate(sex = !!sex) |> 
+#     select(catch, fleet, sex, everything())
+#   
+#   out_lst |> 
+#     bind_rows()
+# }
+
+# j <- imap(basep$mcmccalcs$proj_quants, ~{
+#   tib <- as_tibble(.x, rownames = "quants") |> mutate(catch = .y)
+#   nms <- names(tib)
+#   wch <- grep("^(F|U)20[0-9]{2}_flt[1|2]_sex[1|2]$", nms, value = T)
+#   tib |>
+#     select(c(catch, quants, all_of(wch))) |>
+#     filter(quants == "50%") |> 
+#     mutate(catch = as.numeric(catch)) |> 
+#     select(-quants)
+# }) |> 
+#   map_df(~{.x})
+
+# Calc probability that F < F_B40, first extract projection posteriors
+# tib <- basep$mcmccalcs$proj |> 
+#   bind_rows() |> 
+#   rename(catch = TAC)
+# nms <- names(tib)
+# wch <- grep("^(F|U)20[0-9]{2}_flt[1|2]_sex[1|2]$", nms, value = T)
+# j <- tib |>
+#     select(c(catch, all_of(wch)))
+# 
+# f_lst <- list()
+# f_lst$female <- extract_sex_f(j, "f")
+# f_lst$male <- extract_sex_f(j, "m")
+# f_df <- bind_rows(f_lst)
+# 
+# # Only keep 2022 F's and U's
+# wch <- grep("F2022", names(f_df), value = T)
+# f_ <- f_df |> 
+#   select(catch, fleet, wch) |> 
+#   group_by(catch, fleet) |> 
+#   summarize(sum(F2022 < f_bo_40$f[1]))
+# 
+# wch <- grep("U2022", names(f_df), value = T)
+# u_ <- f_df |> 
+#   select(catch, fleet, sex, wch)
+
+# k <- f_df |>
+#   mutate(f_bo_40 = ifelse(fleet == 1, !!f_bo_40$f[["f_fleet1"]], !!f_bo_40$f[["f_fleet2"]]),
+#          u_bo_40 = ifelse(fleet == 1, !!f_bo_40$u[["u_fleet1"]], !!f_bo_40$u[["u_fleet2"]])) |> 
+#   mutate(F2022_F40 = F2022 / f_bo_40,
+#          U2022_U40 = U2022 / u_bo_40) |> 
+#   select(-c(F2022, U2022, f_bo_40, u_bo_40))
+  
+
+
+```
+
+<!-- For highlighting table cells for readability. See the decision table code for example.  -->
+\definecolor{faint-gray}{gray}{0.9}

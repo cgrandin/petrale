@@ -1,0 +1,8 @@
+book_filename: "resdoc"
+rmd_files: ["index.Rmd",
+            #"test.Rmd"]
+            "060-figures-main.Rmd",
+            "062-figures-mcmc-diagnostics.Rmd",
+            "063-figures-sensitivities.Rmd",
+            "150-references.Rmd"]
+delete_merged_file: true
